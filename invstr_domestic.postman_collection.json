@@ -1,0 +1,1224 @@
+{
+	"info": {
+		"_postman_id": "08a9f3b1-08de-4713-915c-000171b4f2cc",
+		"name": "invstr domestic",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "jwtcollections",
+			"item": [
+				{
+					"name": "Get new Token Copy",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "7e58bf68-0f7c-42db-852a-ea8bf51a6a2f",
+								"exec": [
+									"// generating username\r",
+									"\r",
+									"const host = pm.environment.get('host');\r",
+									"\r",
+									"switch (host) {\r",
+									"    case \"test-fintech.axxiome.com\":\r",
+									"        pm.environment.set('LoginUser', '<provide_INVSTR_TEST_user');\r",
+									"        break;\r",
+									"    case \"10.100.0.123\":\r",
+									"        pm.environment.set('LoginUser', '<usernameQAT>');\r",
+									"        break;\r",
+									"    default:\r",
+									"        console.log(\"Unknown environment\");\r",
+									"        break;\r",
+									"}\r",
+									"\r",
+									"console.log(\"Using customer with login: \" + pm.environment.get('LoginUser'));\r",
+									"\r",
+									"// end of generating new user"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "692f0c71-b244-488d-9290-7702489b5223",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Access Token returned\", function() {",
+									"    var json = JSON.parse(responseBody);",
+									"    pm.expect(json.access_token).to.not.eql(undefined);",
+									"    pm.expect(json.access_token).to.be.a('string');",
+									"});",
+									"pm.test(\"Scope returned\", function() {",
+									"    var json = JSON.parse(responseBody);",
+									"    pm.expect(json.scope).to.not.eql(undefined);",
+									"    pm.expect(json.scope).to.be.a('string');",
+									"});",
+									"pm.test(\"Token Type returned\", function() {",
+									"    var json = JSON.parse(responseBody);",
+									"    pm.expect(json.token_type).to.not.eql(undefined);",
+									"    pm.expect(json.token_type).to.be.a('string');",
+									"});",
+									"pm.test(\"Expires-in returned\", function() {",
+									"    var json = JSON.parse(responseBody);",
+									"    pm.expect(json.expires_in).to.not.eql(undefined);",
+									"    pm.expect(json.expires_in).to.be.a('number');",
+									"});",
+									"",
+									"var json = JSON.parse(responseBody);",
+									"pm.environment.set(\"security.accessToken\", json.access_token);",
+									"console.log(\"TOKEN: Granted token - \" + pm.environment.get(\"security.accessToken\"));",
+									"",
+									"// const jsonData = pm.response.json();",
+									"",
+									"// if (jsonData.expires_in < 1600) {",
+									"//     postman.setNextRequest('Revoke Token');",
+									"// }",
+									"// else {",
+									"//     postman.setNextRequest('Provision - new user');",
+									"// }"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{ConsumerSecret}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{ConsumerKey}}",
+									"type": "string"
+								},
+								{
+									"key": "saveHelperData",
+									"type": "any"
+								},
+								{
+									"key": "showPassword",
+									"value": false,
+									"type": "boolean"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content",
+								"value": "application/x-www-form-urlencoded"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "grant_type=client_credentials"
+						},
+						"url": {
+							"raw": "{{protocol}}://{{host}}:{{port}}/token",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"token"
+							]
+						},
+						"description": "Getting WSO2 token to be allowed performing all future requests."
+					},
+					"response": [
+						{
+							"name": "[200] Get Token",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content",
+										"value": "application/x-www-form-urlencoded"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/x-www-form-urlencoded"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "grant_type=client_credentials"
+								},
+								"url": {
+									"raw": "{{protocol}}://{{host}}:{{port}}/token",
+									"protocol": "{{protocol}}",
+									"host": [
+										"{{host}}"
+									],
+									"port": "{{port}}",
+									"path": [
+										"token"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-store"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "1; mode=block"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 12 Mar 2019 08:27:30 GMT"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"access_token\": \"4ab6c08f-8d8f-3d38-85cd-0f77035150f6\",\n    \"scope\": \"am_application_scope default\",\n    \"token_type\": \"Bearer\",\n    \"expires_in\": 3600\n}"
+						}
+					]
+				},
+				{
+					"name": "Get customer masterdata - getting bp id from here Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "6cf4c864-dffa-440b-abe9-60de61b8fb54",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"",
+									"pm.environment.set(\"BusinessPartnerID\",  pm.response.json().Data.Party.PartyId);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{security.accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"description": "username set with provision call",
+								"key": "X-axxiome-digital-user",
+								"type": "text",
+								"value": "{{LoginUser}}",
+								"disabled": true
+							},
+							{
+								"key": "X-axxiome-digital-token",
+								"type": "text",
+								"value": "{{axxd.token}}",
+								"disabled": true
+							},
+							{
+								"key": "X-axxiome-digital-uuid",
+								"type": "text",
+								"value": "{{axxd.uuid}}"
+							},
+							{
+								"key": "X-axxiome-digital-auth-token",
+								"type": "text",
+								"value": "{{jwtToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{protocol}}://{{host}}:{{port}}/t/{{tenant}}/customerManagement/{{CustomerManagementVersion}}/customers",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"t",
+								"{{tenant}}",
+								"customerManagement",
+								"{{CustomerManagementVersion}}",
+								"customers"
+							]
+						},
+						"description": "Get customer master data"
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Domestic payments Copy",
+			"item": [
+				{
+					"name": "Get balance before Domestic payment",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "e6f4f8c7-7340-44a4-b2de-8f2c33c82770",
+								"exec": [
+									"let aoFailed = pm.environment.get('aoFailed');\r",
+									"\r",
+									"(aoFailed ? pm.test.skip : pm.test)(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// get array of accounts from response\r",
+									"const accountList = pm.response.json().Data.Account;\r",
+									"\r",
+									"\r",
+									"\r",
+									"(aoFailed ? pm.test.skip : pm.test)(\"2 accounts returned\", function () {\r",
+									"    pm.expect(accountList).to.have.lengthOf(2);\r",
+									"});\r",
+									"// variables for entire objects from within the array\r",
+									"let account_sav;\r",
+									"let account_dda;\r",
+									"// variables to verify funding\r",
+									"let account_dda_balance;\r",
+									"let account_sav_balance;\r",
+									"\r",
+									"accountList.forEach(function (account) {\r",
+									"    if (account.AccountSubType === \"DDA\") {\r",
+									"        account_dda = account;\r",
+									"    }\r",
+									"    if (account.AccountSubType === \"SAV\") {\r",
+									"        account_sav = account;\r",
+									"    }\r",
+									"});\r",
+									"\r",
+									"(aoFailed ? pm.test.skip : pm.test)(\"DDA account returned\", function () {\r",
+									"    pm.expect(account_dda).not.eql(undefined);\r",
+									"});\r",
+									"\r",
+									"(aoFailed ? pm.test.skip : pm.test)(\"SAV account returned\", function () {\r",
+									"    pm.expect(account_sav).not.eql(undefined);\r",
+									"});\r",
+									"\r",
+									"(aoFailed ? pm.test.skip : pm.test)(\"DDA availableBalance saved\", function () {\r",
+									"\r",
+									"    account_dda.Balance.forEach(function (balance) {\r",
+									"        if (balance.Type === \"availableBalance\") {\r",
+									"            account_dda_balance = parseFloat(balance.Amount.Amount, 100);\r",
+									"        }\r",
+									"    });\r",
+									"    pm.environment.set(\"DDA_Account_Balance\", account_dda_balance);\r",
+									"});\r",
+									"\r",
+									"(aoFailed ? pm.test.skip : pm.test)(\"SAV availableBalance saved\", function () {\r",
+									"\r",
+									"    account_sav.Balance.forEach(function (balance) {\r",
+									"        if (balance.Type === \"availableBalance\") {\r",
+									"            account_sav_balance = parseFloat(balance.Amount.Amount, 100);\r",
+									"        }\r",
+									"    });\r",
+									"   pm.environment.set(\"SAV_Account_Balance\", account_sav_balance);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"console.log(\"DDA balance before domestic: \" + account_dda_balance);\r",
+									"console.log(\"SAV balance before domestic: \" + account_sav_balance);\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{security.accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept-Language",
+								"value": "en-US",
+								"type": "text"
+							},
+							{
+								"key": "X-axxiome-digital-user",
+								"value": "{{LoginUser}}",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "X-axxiome-digital-auth-token",
+								"value": "{{jwtToken}}",
+								"type": "text"
+							},
+							{
+								"key": "X-axxiome-digital-uuid",
+								"value": "{{axxd.uuid}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{protocol}}://{{host}}:{{port}}/t/{{tenant}}/account/{{AccountsVersion}}/accountsummary",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"t",
+								"{{tenant}}",
+								"account",
+								"{{AccountsVersion}}",
+								"accountsummary"
+							]
+						},
+						"description": "Retrieve summary of accounts"
+					},
+					"response": []
+				},
+				{
+					"name": "Post Internal Bank Transfer DDA to SAV",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "40325938-4918-43ea-a4e5-87fdaa3f7ce0",
+								"exec": [
+									"let aoFailed = pm.environment.get('aoFailed');",
+									"",
+									"(aoFailed ? pm.test.skip : pm.test)(\"Status code is 200\", () => {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"(aoFailed ? pm.test.skip : pm.test)('Response is not empty', () => {",
+									"    const responseJSON = pm.response.json();",
+									"    pm.expect(responseJSON).not.be.empty;",
+									"    ",
+									"});",
+									"",
+									"(aoFailed ? pm.test.skip : pm.test)(\"Check DomesticPaymentID\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.Data.DomesticPaymentID).not.eql(null);",
+									"    pm.environment.set(\"DomesticPayment.Id\", jsonData.Data.DomesticPaymentId);",
+									"    pm.environment.set(\"DomesticPayment.Amount\", jsonData.Data.Initiation.InstructedAmount.Amount);",
+									"});",
+									"",
+									"(aoFailed ? pm.test.skip : pm.test)(\"Check Payment Info\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.Data.Initiation.EndToEndIdentification).to.eql(\"Monitor API Test domestic transfer DDA to SAV\");",
+									"    pm.expect(jsonData.Data.Initiation.DebtorAccount.Identification).to.eql(pm.environment.get(\"DDA_AccountId\"));",
+									"    pm.expect(jsonData.Data.Initiation.CreditorAccount.Identification).to.eql(pm.environment.get(\"SAV_AccountId\"));",
+									"});",
+									"",
+									"",
+									" ",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{security.accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept-Language",
+								"value": "en-US",
+								"type": "text"
+							},
+							{
+								"key": "X-axxiome-digital-user",
+								"value": "{{LoginUser}}",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "X-axxiome-digital-token",
+								"value": "{{axxd.token}}",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "X-axxiome-digital-uuid",
+								"value": "{{axxd.uuid}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "X-axxiome-digital-auth-token",
+								"value": "{{jwtToken}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"Data\": {\r\n\t\t\"Initiation\": {\r\n\t\t\t\"InstructionIdentification\": \"ACME413\",\r\n\t\t\t\"EndToEndIdentification\": \"Monitor API Test domestic transfer DDA to SAV\",\r\n\t\t\t\"InstructedAmount\": {\r\n\t\t\t\t\"Amount\": \"30\",\r\n\t\t\t\t\"Currency\": \"USD\"\r\n\t\t\t},\r\n\t\t\t\"DebtorAccount\": {\r\n\t\t\t\t\"SchemeName\": \"AXXD.INTERNAL_ID\",\r\n\t\t\t\t\"Identification\": \"{{DDA_AccountId}}\",\r\n\t\t\t\t\"Name\": \"MonitorFirstName MonitorLastName\"\r\n\t\t\t},\r\n\t\t\t\"CreditorAccount\": {\r\n\t\t\t\t\"SchemeName\": \"AXXD.INTERNAL_ID\",\r\n\t\t\t\t\"Identification\": \"{{SAV_AccountId}}\",\r\n\t\t\t\t\"Name\": \"MonitorFirstName MonitorLastName\"\r\n\t\t\t},\r\n\t        \"RemittanceInformation\": {\r\n\t        \t\"Unstructured\": \"domestic payment DDA to SAV\"\r\n\t        }\r\n\t\t}\r\n\t}\r\n}\r\n"
+						},
+						"url": {
+							"raw": "{{protocol}}://{{host}}:{{port}}/t/{{tenant}}/payment/{{DomesticPaymentVersion}}/domestic-payment",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"t",
+								"{{tenant}}",
+								"payment",
+								"{{DomesticPaymentVersion}}",
+								"domestic-payment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DDA to SAV displayed under Transaction history",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "5581d929-bced-42f6-89f8-cc9d5da29d87",
+								"exec": [
+									"let aoFailed = pm.environment.get('aoFailed');",
+									"",
+									"(aoFailed ? pm.test.skip : pm.test)(\"Status code is 200\", () => {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"(aoFailed ? pm.test.skip : pm.test)('Response is not empty', () => {",
+									"    let responseJSON = pm.response.json();",
+									"    pm.expect(responseJSON).not.be.empty;",
+									"",
+									"});",
+									"",
+									"(aoFailed ? pm.test.skip : pm.test)('DDA to SAV transaction is returned in transaction history', () => {",
+									"    let transactions = pm.response.json().Data.Transaction;",
+									"    let foundTransaction = null;",
+									"    let expectedPaymentId = pm.environment.get(\"DomesticPayment.Id\");",
+									"    let expectedPaymentAmount = pm.environment.get(\"DomesticPayment.Amount\");",
+									"    ",
+									"    // ",
+									"    transactions.forEach(function (transaction) {",
+									"        if(transaction.TransactionId === expectedPaymentId) {",
+									"            foundTransaction = transaction;",
+									"        }",
+									"    });",
+									"    ",
+									"    pm.expect(foundTransaction).to.not.eql(null, \"Transaction of id \" + expectedPaymentId + \" not found!\");",
+									"    pm.expect(parseInt(foundTransaction.Amount.Amount)).to.eql(expectedPaymentAmount, \"Amount is incorrect!\");",
+									"",
+									"});",
+									"",
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{security.accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept-Language",
+								"value": "en-US",
+								"type": "text"
+							},
+							{
+								"key": "X-axxiome-digital-user",
+								"value": "{{LoginUser}}",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "X-axxiome-digital-token",
+								"value": "{{axxd.token}}",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "X-axxiome-digital-uuid",
+								"value": "{{axxd.uuid}}",
+								"type": "text"
+							},
+							{
+								"key": "X-axxiome-digital-customerId",
+								"value": "{{BusinessPartnerID}}",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "X-axxiome-digital-auth-token",
+								"value": "{{jwtToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{protocol}}://{{host}}:{{port}}/t/{{tenant}}/account/{{AccountsVersion}}/accounts/{{DDA_AccountId}}/transactions",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"t",
+								"{{tenant}}",
+								"account",
+								"{{AccountsVersion}}",
+								"accounts",
+								"{{DDA_AccountId}}",
+								"transactions"
+							]
+						},
+						"description": "Getting history of transactions for selected account"
+					},
+					"response": []
+				},
+				{
+					"name": "Get balance after Domestic payment",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "63679dcb-7204-430f-bccf-6cc55d78c37f",
+								"exec": [
+									"let aoFailed = pm.environment.get('aoFailed');\r",
+									"\r",
+									"(aoFailed ? pm.test.skip : pm.test)(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// get array of accounts from response\r",
+									"const accountList = pm.response.json().Data.Account;\r",
+									"\r",
+									"\r",
+									"\r",
+									"(aoFailed ? pm.test.skip : pm.test)(\"2 accounts returned\", function () {\r",
+									"    pm.expect(accountList).to.have.lengthOf(2);\r",
+									"});\r",
+									"// variables for entire objects from within the array\r",
+									"let account_sav;\r",
+									"let account_dda;\r",
+									"// variables to verify funding\r",
+									"let account_dda_balance;\r",
+									"let account_sav_balance;\r",
+									"\r",
+									"accountList.forEach(function (account) {\r",
+									"    if (account.AccountSubType === \"DDA\") {\r",
+									"        account_dda = account;\r",
+									"    }\r",
+									"    if (account.AccountSubType === \"SAV\") {\r",
+									"        account_sav = account;\r",
+									"    }\r",
+									"});\r",
+									"\r",
+									"(aoFailed ? pm.test.skip : pm.test)(\"DDA account returned\", function () {\r",
+									"    pm.expect(account_dda).not.eql(undefined);\r",
+									"});\r",
+									"\r",
+									"(aoFailed ? pm.test.skip : pm.test)(\"SAV account returned\", function () {\r",
+									"    pm.expect(account_sav).not.eql(undefined);\r",
+									"});\r",
+									"\r",
+									"(aoFailed ? pm.test.skip : pm.test)(\"DDA availableBalance decreased\", function () {\r",
+									"\r",
+									"    // from different types of balance take available balance\r",
+									"    account_dda.Balance.forEach(function (balance) {\r",
+									"        if (balance.Type === \"availableBalance\") {\r",
+									"            // and parse string to int\r",
+									"            account_dda_balance = parseFloat(balance.Amount.Amount);\r",
+									"        }\r",
+									"    });\r",
+									"    // now parse previous balance and transfered amount with domestic payment\r",
+									"    var transferedAmmount = parseFloat(pm.environment.get(\"DomesticPayment.Amount\"));\r",
+									"    var previousBalance = parseFloat(pm.environment.get(\"DDA_Account_Balance\"));\r",
+									"    \r",
+									"    // new DDA balance should = old DDA balance - transfered amount\r",
+									"    pm.expect(account_dda_balance).to.eql(parseFloat((previousBalance - transferedAmmount).toFixed(3)));\r",
+									"    // save new available balance for the next test\r",
+									"    pm.environment.set(\"DDA_Account_Balance\", account_dda_balance);\r",
+									"});\r",
+									"\r",
+									"(aoFailed ? pm.test.skip : pm.test)(\"SAV availableBalance increased\", function () {\r",
+									"\r",
+									"    account_sav.Balance.forEach(function (balance) {\r",
+									"        if (balance.Type === \"availableBalance\") {\r",
+									"            account_sav_balance = parseFloat(balance.Amount.Amount);\r",
+									"        }\r",
+									"    });\r",
+									"    var transferedAmmount = parseFloat(pm.environment.get(\"DomesticPayment.Amount\"));\r",
+									"    var previousBalance = parseFloat(pm.environment.get(\"SAV_Account_Balance\"));\r",
+									"    // new SAV balance should = old SAV balance + transfered amount\r",
+									"    pm.expect(account_sav_balance).to.eql(parseFloat((previousBalance + transferedAmmount).toFixed(3)));\r",
+									"    \r",
+									"    pm.environment.set(\"SAV_Account_Balance\", account_sav_balance);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"console.log(\"DDA balance after domestic: \" + account_dda_balance);\r",
+									"console.log(\"SAV balance after domestic: \" + account_sav_balance);\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{security.accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept-Language",
+								"value": "en-US",
+								"type": "text"
+							},
+							{
+								"key": "X-axxiome-digital-user",
+								"value": "{{LoginUser}}",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "X-axxiome-digital-auth-token",
+								"value": "{{jwtToken}}",
+								"type": "text"
+							},
+							{
+								"key": "X-axxiome-digital-uuid",
+								"value": "{{axxd.uuid}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{protocol}}://{{host}}:{{port}}/t/{{tenant}}/account/{{AccountsVersion}}/accountsummary",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"t",
+								"{{tenant}}",
+								"account",
+								"{{AccountsVersion}}",
+								"accountsummary"
+							]
+						},
+						"description": "Retrieve summary of accounts"
+					},
+					"response": []
+				},
+				{
+					"name": "Post Internal Bank Transfer SAV to DDA",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "6f599576-9366-47ee-bf17-5e8d8ea90d91",
+								"exec": [
+									"let aoFailed = pm.environment.get('aoFailed');",
+									"",
+									"(aoFailed ? pm.test.skip : pm.test)(\"Status code is 200\", () => {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"(aoFailed ? pm.test.skip : pm.test)('Response is not empty', () => {",
+									"    const responseJSON = pm.response.json();",
+									"    pm.expect(responseJSON).not.be.empty;",
+									"    ",
+									"});",
+									"",
+									"(aoFailed ? pm.test.skip : pm.test)(\"Check DomesticPaymentID\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.Data.DomesticPaymentID).not.eql(null);",
+									"    pm.environment.set(\"DomesticPayment.Id\", jsonData.Data.DomesticPaymentId);",
+									"    pm.environment.set(\"DomesticPayment.Amount\", jsonData.Data.Initiation.InstructedAmount.Amount);",
+									"});",
+									"",
+									"(aoFailed ? pm.test.skip : pm.test)(\"Check Payment Info\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.Data.Initiation.EndToEndIdentification).to.eql(\"Monitor API Test domestic transfer SAV to DDA\");",
+									"    pm.expect(jsonData.Data.Initiation.DebtorAccount.Identification).to.eql(pm.environment.get(\"SAV_AccountId\"));",
+									"    pm.expect(jsonData.Data.Initiation.CreditorAccount.Identification).to.eql(pm.environment.get(\"DDA_AccountId\"));",
+									"});",
+									"",
+									"",
+									" ",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{security.accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept-Language",
+								"value": "en-US",
+								"type": "text"
+							},
+							{
+								"key": "X-axxiome-digital-user",
+								"value": "{{LoginUser}}",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "X-axxiome-digital-token",
+								"value": "{{axxd.token}}",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "X-axxiome-digital-uuid",
+								"value": "{{axxd.uuid}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "X-axxiome-digital-auth-token",
+								"value": "{{jwtToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"Data\": {\r\n\t\t\"Initiation\": {\r\n\t\t\t\"InstructionIdentification\": \"ACME413\",\r\n\t\t\t\"EndToEndIdentification\": \"Monitor API Test domestic transfer SAV to DDA\",\r\n\t\t\t\"InstructedAmount\": {\r\n\t\t\t\t\"Amount\": \"10.000000000\",\r\n\t\t\t\t\"Currency\": \"USD\"\r\n\t\t\t},\r\n\t\t\t\"DebtorAccount\": {\r\n\t\t\t\t\"SchemeName\": \"AXXD.INTERNAL_ID\",\r\n\t\t\t\t\"Identification\": \"{{SAV_AccountId}}\",\r\n\t\t\t\t\"Name\": \"MonitorFirstName MonitorLastName\"\r\n\t\t\t},\r\n\t\t\t\"CreditorAccount\": {\r\n\t\t\t\t\"SchemeName\": \"AXXD.INTERNAL_ID\",\r\n\t\t\t\t\"Identification\": \"{{DDA_AccountId}}\",\r\n\t\t\t\t\"Name\": \"MonitorFirstName MonitorLastName\"\r\n\t\t\t},\r\n\t        \"RemittanceInformation\": {\r\n\t        \t\"Unstructured\": \"domestic payment SAV to DDA\"\r\n\t        }\r\n\t\t}\r\n\t}\r\n}\r\n"
+						},
+						"url": {
+							"raw": "{{protocol}}://{{host}}:{{port}}/t/{{tenant}}/payment/{{DomesticPaymentVersion}}/domestic-payment",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"t",
+								"{{tenant}}",
+								"payment",
+								"{{DomesticPaymentVersion}}",
+								"domestic-payment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "SAV to DDA displayed under Transaction history",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "e77c4afc-e265-42cd-92bc-37f7ba249736",
+								"exec": [
+									"",
+									"let aoFailed = pm.environment.get('aoFailed');",
+									"",
+									"(aoFailed ? pm.test.skip : pm.test)(\"Status code is 200\", () => {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"(aoFailed ? pm.test.skip : pm.test)('Response is not empty', () => {",
+									"    var responseJSON = pm.response.json();",
+									"    pm.expect(responseJSON).not.be.empty;",
+									"",
+									"});",
+									"",
+									"(aoFailed ? pm.test.skip : pm.test)('SAV to DDA transaction is returned in transaction history', () => {",
+									"    var transactions = pm.response.json().Data.Transaction;",
+									"    var foundTransaction = null;",
+									"    var expectedPaymentId = pm.environment.get(\"DomesticPayment.Id\");",
+									"    var expectedPaymentAmount = pm.environment.get(\"DomesticPayment.Amount\");",
+									"    ",
+									"    // ",
+									"    transactions.forEach(function (transaction) {",
+									"        if(transaction.TransactionId === expectedPaymentId) {",
+									"            foundTransaction = transaction;",
+									"        }",
+									"    });",
+									"    ",
+									"    pm.expect(foundTransaction).to.not.eql(null, \"Transaction of id \" + expectedPaymentId + \" not found!\");",
+									"    pm.expect(parseInt(foundTransaction.Amount.Amount)).to.eql(expectedPaymentAmount, \"Amount is incorrect!\");",
+									"",
+									"});",
+									"",
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{security.accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept-Language",
+								"value": "en-US",
+								"type": "text"
+							},
+							{
+								"key": "X-axxiome-digital-user",
+								"value": "{{LoginUser}}",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "X-axxiome-digital-token",
+								"value": "{{axxd.token}}",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "X-axxiome-digital-uuid",
+								"value": "{{axxd.uuid}}",
+								"type": "text"
+							},
+							{
+								"key": "X-axxiome-digital-customerId",
+								"value": "{{BusinessPartnerID}}",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "X-axxiome-digital-auth-token",
+								"value": "{{jwtToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{protocol}}://{{host}}:{{port}}/t/{{tenant}}/account/{{AccountsVersion}}/accounts/{{SAV_AccountId}}/transactions",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"t",
+								"{{tenant}}",
+								"account",
+								"{{AccountsVersion}}",
+								"accounts",
+								"{{SAV_AccountId}}",
+								"transactions"
+							]
+						},
+						"description": "Getting history of transactions for selected account"
+					},
+					"response": []
+				},
+				{
+					"name": "Get balance after Domestic payment",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "a64fd081-9621-46bb-8965-a038988efb1e",
+								"exec": [
+									"let aoFailed = pm.environment.get('aoFailed');\r",
+									"\r",
+									"(aoFailed ? pm.test.skip : pm.test)(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// get array of accounts from response\r",
+									"const accountList = pm.response.json().Data.Account;\r",
+									"\r",
+									"\r",
+									"\r",
+									"(aoFailed ? pm.test.skip : pm.test)(\"2 accounts returned\", function () {\r",
+									"    pm.expect(accountList).to.have.lengthOf(2);\r",
+									"});\r",
+									"// variables for entire objects from within the array\r",
+									"let account_sav;\r",
+									"let account_dda;\r",
+									"// variables to verify funding\r",
+									"let account_dda_balance;\r",
+									"let account_sav_balance;\r",
+									"\r",
+									"accountList.forEach(function (account) {\r",
+									"    if (account.AccountSubType === \"DDA\") {\r",
+									"        account_dda = account;\r",
+									"    }\r",
+									"    if (account.AccountSubType === \"SAV\") {\r",
+									"        account_sav = account;\r",
+									"    }\r",
+									"});\r",
+									"\r",
+									"(aoFailed ? pm.test.skip : pm.test)(\"DDA account returned\", function () {\r",
+									"    pm.expect(account_dda).not.eql(undefined);\r",
+									"});\r",
+									"\r",
+									"(aoFailed ? pm.test.skip : pm.test)(\"SAV account returned\", function () {\r",
+									"    pm.expect(account_sav).not.eql(undefined);\r",
+									"});\r",
+									"\r",
+									"(aoFailed ? pm.test.skip : pm.test)(\"DDA availableBalance increased\", function () {\r",
+									"\r",
+									"    // from different types of balance take available balance\r",
+									"    account_dda.Balance.forEach(function (balance) {\r",
+									"        if (balance.Type === \"availableBalance\") {\r",
+									"            // and parse string to int\r",
+									"            account_dda_balance = parseFloat(balance.Amount.Amount);\r",
+									"        }\r",
+									"    });\r",
+									"    // now parse previous balance and transfered amount with domestic payment\r",
+									"    var transferedAmmount = parseFloat(pm.environment.get(\"DomesticPayment.Amount\"));\r",
+									"    var previousBalance = parseFloat(pm.environment.get(\"DDA_Account_Balance\"));\r",
+									"    \r",
+									"    // this time we transfered from SAV to DDA, so DDA should be increased after payment\r",
+									"    pm.expect(account_dda_balance).to.eql(parseFloat((previousBalance + transferedAmmount).toFixed(3)));\r",
+									"    // save new available balance for the next test\r",
+									"    pm.environment.set(\"DDA_Account_Balance\", account_dda_balance);\r",
+									"});\r",
+									"\r",
+									"(aoFailed ? pm.test.skip : pm.test)(\"SAV availableBalance decreased\", function () {\r",
+									"\r",
+									"    account_sav.Balance.forEach(function (balance) {\r",
+									"        if (balance.Type === \"availableBalance\") {\r",
+									"            account_sav_balance = parseFloat(balance.Amount.Amount);\r",
+									"        }\r",
+									"    });\r",
+									"    var transferedAmmount = parseFloat(pm.environment.get(\"DomesticPayment.Amount\"));\r",
+									"    var previousBalance = parseFloat(pm.environment.get(\"SAV_Account_Balance\"));\r",
+									"    // accordingly to the scenario\r",
+									"    pm.expect(account_sav_balance).to.eql(parseFloat((previousBalance - transferedAmmount).toFixed(3)));\r",
+									"    \r",
+									"    pm.environment.set(\"SAV_Account_Balance\", account_sav_balance);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"console.log(\"DDA balance after domestic: \" + account_dda_balance);\r",
+									"console.log(\"SAV balance after domestic: \" + account_sav_balance);\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{security.accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept-Language",
+								"value": "en-US",
+								"type": "text"
+							},
+							{
+								"key": "X-axxiome-digital-user",
+								"value": "{{LoginUser}}",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "X-axxiome-digital-auth-token",
+								"value": "{{jwtToken}}",
+								"type": "text"
+							},
+							{
+								"key": "X-axxiome-digital-uuid",
+								"value": "{{axxd.uuid}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{protocol}}://{{host}}:{{port}}/t/{{tenant}}/account/{{AccountsVersion}}/accountsummary",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"t",
+								"{{tenant}}",
+								"account",
+								"{{AccountsVersion}}",
+								"accountsummary"
+							]
+						},
+						"description": "Retrieve summary of accounts"
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
