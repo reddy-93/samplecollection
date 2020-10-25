@@ -318,6 +318,7 @@
 								"id": "e6f4f8c7-7340-44a4-b2de-8f2c33c82770",
 								"exec": [
 									"let aoFailed = pm.environment.get('aoFailed');\r",
+									"aoFailed = (aoFailed == \"true\");\r",
 									"\r",
 									"(aoFailed ? pm.test.skip : pm.test)(\"Status code is 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -455,7 +456,7 @@
 								"id": "40325938-4918-43ea-a4e5-87fdaa3f7ce0",
 								"exec": [
 									"let aoFailed = pm.environment.get('aoFailed');",
-									"",
+									"aoFailed = (aoFailed == \"true\");",
 									"(aoFailed ? pm.test.skip : pm.test)(\"Status code is 200\", () => {",
 									"    pm.response.to.have.status(200);",
 									"});",
@@ -541,7 +542,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n\t\"Data\": {\r\n\t\t\"Initiation\": {\r\n\t\t\t\"InstructionIdentification\": \"ACME413\",\r\n\t\t\t\"EndToEndIdentification\": \"Monitor API Test domestic transfer DDA to SAV\",\r\n\t\t\t\"InstructedAmount\": {\r\n\t\t\t\t\"Amount\": \"30\",\r\n\t\t\t\t\"Currency\": \"USD\"\r\n\t\t\t},\r\n\t\t\t\"DebtorAccount\": {\r\n\t\t\t\t\"SchemeName\": \"AXXD.INTERNAL_ID\",\r\n\t\t\t\t\"Identification\": \"{{DDA_AccountId}}\",\r\n\t\t\t\t\"Name\": \"MonitorFirstName MonitorLastName\"\r\n\t\t\t},\r\n\t\t\t\"CreditorAccount\": {\r\n\t\t\t\t\"SchemeName\": \"AXXD.INTERNAL_ID\",\r\n\t\t\t\t\"Identification\": \"{{SAV_AccountId}}\",\r\n\t\t\t\t\"Name\": \"MonitorFirstName MonitorLastName\"\r\n\t\t\t},\r\n\t        \"RemittanceInformation\": {\r\n\t        \t\"Unstructured\": \"domestic payment DDA to SAV\"\r\n\t        }\r\n\t\t}\r\n\t}\r\n}\r\n"
+							"raw": "{\r\n\t\"Data\": {\r\n\t\t\"Initiation\": {\r\n\t\t\t\"InstructionIdentification\": \"ACME413\",\r\n\t\t\t\"EndToEndIdentification\": \"Monitor API Test domestic transfer DDA to SAV\",\r\n\t\t\t\"InstructedAmount\": {\r\n\t\t\t\t\"Amount\": \"11\",\r\n\t\t\t\t\"Currency\": \"USD\"\r\n\t\t\t},\r\n\t\t\t\"DebtorAccount\": {\r\n\t\t\t\t\"SchemeName\": \"AXXD.INTERNAL_ID\",\r\n\t\t\t\t\"Identification\": \"{{DDA_AccountId}}\",\r\n\t\t\t\t\"Name\": \"MonitorFirstName MonitorLastName\"\r\n\t\t\t},\r\n\t\t\t\"CreditorAccount\": {\r\n\t\t\t\t\"SchemeName\": \"AXXD.INTERNAL_ID\",\r\n\t\t\t\t\"Identification\": \"{{SAV_AccountId}}\",\r\n\t\t\t\t\"Name\": \"MonitorFirstName MonitorLastName\"\r\n\t\t\t},\r\n\t        \"RemittanceInformation\": {\r\n\t        \t\"Unstructured\": \"domestic payment DDA to SAV\"\r\n\t        }\r\n\t\t}\r\n\t}\r\n}\r\n"
 						},
 						"url": {
 							"raw": "{{protocol}}://{{host}}:{{port}}/t/{{tenant}}/payment/{{DomesticPaymentVersion}}/domestic-payment",
@@ -570,7 +571,7 @@
 								"id": "5581d929-bced-42f6-89f8-cc9d5da29d87",
 								"exec": [
 									"let aoFailed = pm.environment.get('aoFailed');",
-									"",
+									"aoFailed = (aoFailed == \"true\");",
 									"(aoFailed ? pm.test.skip : pm.test)(\"Status code is 200\", () => {",
 									"    pm.response.to.have.status(200);",
 									"});",
@@ -691,7 +692,7 @@
 								"id": "63679dcb-7204-430f-bccf-6cc55d78c37f",
 								"exec": [
 									"let aoFailed = pm.environment.get('aoFailed');\r",
-									"\r",
+									"aoFailed = (aoFailed == \"true\");\r",
 									"(aoFailed ? pm.test.skip : pm.test)(\"Status code is 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
 									"});\r",
@@ -842,7 +843,7 @@
 								"id": "6f599576-9366-47ee-bf17-5e8d8ea90d91",
 								"exec": [
 									"let aoFailed = pm.environment.get('aoFailed');",
-									"",
+									"aoFailed = (aoFailed == \"true\");",
 									"(aoFailed ? pm.test.skip : pm.test)(\"Status code is 200\", () => {",
 									"    pm.response.to.have.status(200);",
 									"});",
@@ -923,7 +924,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n\t\"Data\": {\r\n\t\t\"Initiation\": {\r\n\t\t\t\"InstructionIdentification\": \"ACME413\",\r\n\t\t\t\"EndToEndIdentification\": \"Monitor API Test domestic transfer SAV to DDA\",\r\n\t\t\t\"InstructedAmount\": {\r\n\t\t\t\t\"Amount\": \"10.000000000\",\r\n\t\t\t\t\"Currency\": \"USD\"\r\n\t\t\t},\r\n\t\t\t\"DebtorAccount\": {\r\n\t\t\t\t\"SchemeName\": \"AXXD.INTERNAL_ID\",\r\n\t\t\t\t\"Identification\": \"{{SAV_AccountId}}\",\r\n\t\t\t\t\"Name\": \"MonitorFirstName MonitorLastName\"\r\n\t\t\t},\r\n\t\t\t\"CreditorAccount\": {\r\n\t\t\t\t\"SchemeName\": \"AXXD.INTERNAL_ID\",\r\n\t\t\t\t\"Identification\": \"{{DDA_AccountId}}\",\r\n\t\t\t\t\"Name\": \"MonitorFirstName MonitorLastName\"\r\n\t\t\t},\r\n\t        \"RemittanceInformation\": {\r\n\t        \t\"Unstructured\": \"domestic payment SAV to DDA\"\r\n\t        }\r\n\t\t}\r\n\t}\r\n}\r\n"
+							"raw": "{\r\n\t\"Data\": {\r\n\t\t\"Initiation\": {\r\n\t\t\t\"InstructionIdentification\": \"ACME413\",\r\n\t\t\t\"EndToEndIdentification\": \"Monitor API Test domestic transfer SAV to DDA\",\r\n\t\t\t\"InstructedAmount\": {\r\n\t\t\t\t\"Amount\": \"11\",\r\n\t\t\t\t\"Currency\": \"USD\"\r\n\t\t\t},\r\n\t\t\t\"DebtorAccount\": {\r\n\t\t\t\t\"SchemeName\": \"AXXD.INTERNAL_ID\",\r\n\t\t\t\t\"Identification\": \"{{SAV_AccountId}}\",\r\n\t\t\t\t\"Name\": \"MonitorFirstName MonitorLastName\"\r\n\t\t\t},\r\n\t\t\t\"CreditorAccount\": {\r\n\t\t\t\t\"SchemeName\": \"AXXD.INTERNAL_ID\",\r\n\t\t\t\t\"Identification\": \"{{DDA_AccountId}}\",\r\n\t\t\t\t\"Name\": \"MonitorFirstName MonitorLastName\"\r\n\t\t\t},\r\n\t        \"RemittanceInformation\": {\r\n\t        \t\"Unstructured\": \"domestic payment SAV to DDA\"\r\n\t        }\r\n\t\t}\r\n\t}\r\n}\r\n"
 						},
 						"url": {
 							"raw": "{{protocol}}://{{host}}:{{port}}/t/{{tenant}}/payment/{{DomesticPaymentVersion}}/domestic-payment",
@@ -953,7 +954,7 @@
 								"exec": [
 									"",
 									"let aoFailed = pm.environment.get('aoFailed');",
-									"",
+									"aoFailed = (aoFailed == \"true\");",
 									"(aoFailed ? pm.test.skip : pm.test)(\"Status code is 200\", () => {",
 									"    pm.response.to.have.status(200);",
 									"});",
@@ -1074,7 +1075,7 @@
 								"id": "a64fd081-9621-46bb-8965-a038988efb1e",
 								"exec": [
 									"let aoFailed = pm.environment.get('aoFailed');\r",
-									"\r",
+									"aoFailed = (aoFailed == \"true\");\r",
 									"(aoFailed ? pm.test.skip : pm.test)(\"Status code is 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
 									"});\r",
